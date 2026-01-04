@@ -1,7 +1,7 @@
 マイコンLCDのFont作成までのメモ(東雲fontのみ12dot16dotのみ)
 
 
-"D:\1CW_PY\pdb_to_h_file\LCDpy\lcd-image-converter"(lcd-image-converter本体zip)
+同梱出来ず"D:\1CW_PY\pdb_to_h_file\LCDpy\lcd-image-converter"(lcd-image-converter本体zip)
 "D:\1CW_PY\pdb_to_h_file\LCDpy\bmp12.py"
 "D:\1CW_PY\pdb_to_h_file\LCDpy\bmp16.py"
 "D:\1CW_PY\pdb_to_h_file\LCDpy\font1.jpg"(東雲どんな感じか？)
@@ -9,7 +9,7 @@
 "D:\1CW_PY\pdb_to_h_file\LCDpy\font12_grid_50x138.bmp"
 "D:\1CW_PY\pdb_to_h_file\LCDpy\font16_grid_50x138.bmp"
 "D:\1CW_PY\pdb_to_h_file\LCDpy\Image.c"(image-converterで12dotのC)
-"D:\1CW_PY\pdb_to_h_file\LCDpy\shinonome-0.9.11p1.tar"(東雲各種bdf)
+同梱出来ず"D:\1CW_PY\pdb_to_h_file\LCDpy\shinonome-0.9.11p1.tar"(東雲各種bdf)
 "D:\1CW_PY\pdb_to_h_file\LCDpy\shnmk12.bdf"(変換に必要な12dotのbdf)
 "D:\1CW_PY\pdb_to_h_file\LCDpy\shnmk16.bdf"()
 "D:\1CW_PY\pdb_to_h_file\LCDpy\view12to100.py"可視化(先頭から100個)
@@ -28,7 +28,7 @@ python view12to100.py shnmk12.bdf
 
 http://palm.roguelife.org/cjkos/#structure
 http://openlab.ring.gr.jp/efont/shinonome/
-(申し訳ございません。が使わせて頂きました)
+(申し訳ございませんが、勝手に使わせて頂きました)
 shinonome-0.9.11p1.tar (無くなったら困るので)
 
 lcd-image-converterでbmpファイルのCソースコード化
@@ -87,3 +87,4 @@ void drawKanji16(uint16_t x, uint16_t y, uint16_t jis, uint16_t fg, uint16_t bg)
         }
     }
 }
+
