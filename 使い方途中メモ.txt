@@ -1,0 +1,89 @@
+マイコンLCDのFont作成までのメモ(東雲fontのみ12dot16dotのみ)
+
+
+"D:\1CW_PY\pdb_to_h_file\LCDpy\lcd-image-converter"(lcd-image-converter本体zip)
+"D:\1CW_PY\pdb_to_h_file\LCDpy\bmp12.py"
+"D:\1CW_PY\pdb_to_h_file\LCDpy\bmp16.py"
+"D:\1CW_PY\pdb_to_h_file\LCDpy\font1.jpg"(東雲どんな感じか？)
+"D:\1CW_PY\pdb_to_h_file\LCDpy\font2.jpg"
+"D:\1CW_PY\pdb_to_h_file\LCDpy\font12_grid_50x138.bmp"
+"D:\1CW_PY\pdb_to_h_file\LCDpy\font16_grid_50x138.bmp"
+"D:\1CW_PY\pdb_to_h_file\LCDpy\Image.c"(image-converterで12dotのC)
+"D:\1CW_PY\pdb_to_h_file\LCDpy\shinonome-0.9.11p1.tar"(東雲各種bdf)
+"D:\1CW_PY\pdb_to_h_file\LCDpy\shnmk12.bdf"(変換に必要な12dotのbdf)
+"D:\1CW_PY\pdb_to_h_file\LCDpy\shnmk16.bdf"()
+"D:\1CW_PY\pdb_to_h_file\LCDpy\view12to100.py"可視化(先頭から100個)
+"D:\1CW_PY\pdb_to_h_file\LCDpy\使い方途中メモ.txt"
+"D:\1CW_PY\pdb_to_h_file\LCDpy\説明1.jpg"(fontフォーマット説明)
+"D:\1CW_PY\pdb_to_h_file\LCDpy\説明2.jpg"
+"D:\1CW_PY\pdb_to_h_file\LCDpy\説明3.jpg"
+
+自分の環境でshnmk12.bdfから12dot50文字行数138のbmpファイル作成
+(sdカード,spi romで使う)
+PS D:\1CW_PY\pdb_to_h_file> python bmp12.py shnmk12.bdf------>font12_grid_50x138.bmp(123KB)
+PS D:\1CW_PY\pdb_to_h_file> python bmp16.py shnmk16.bdf------>font16_grid_50x138.bmp(216KB)
+
+shnmk12.bdfの可視化(先頭から100個)
+python view12to100.py shnmk12.bdf
+
+http://palm.roguelife.org/cjkos/#structure
+http://openlab.ring.gr.jp/efont/shinonome/
+(申し訳ございません。が使わせて頂きました)
+shinonome-0.9.11p1.tar (無くなったら困るので)
+
+lcd-image-converterでbmpファイルのCソースコード化
+
+
+
+
+
+
+
+
+
+
+案
+void drawKanji12(uint16_t x, uint16_t y, uint16_t jis,
+                 uint16_t fg, uint16_t bg)
+{
+    uint16_t idx = jis - SHINONOME_JIS_START;
+    const uint8_t *font = shinonome_kanji_lv1_12[idx];
+
+    for (int row = 0; row < 12; row++) {
+
+        uint8_t upper = font[row];              // 上位8bit
+        uint8_t lower = font[12 + row / 2];     // 下位4bit（2行で1バイト）
+
+        // 偶数行 → 上位4bit、奇数行 → 下位4bit
+        if (row & 1)
+            lower &= 0x0F;          // 下位4bit
+        else
+            lower >>= 4;            // 上位4bit
+
+        // 12bit のビット列を構成
+        uint16_t bits = ((uint16_t)upper << 4) | lower;
+
+        for (int col = 0; col < 12; col++) {
+            if (bits & (0x800 >> col))
+                drawPixel(x + col, y + row, fg);
+            else
+                drawPixel(x + col, y + row, bg);
+        }
+    }
+}
+void drawKanji16(uint16_t x, uint16_t y, uint16_t jis, uint16_t fg, uint16_t bg)
+{
+    uint16_t idx = jis - SHINONOME_JIS_START;
+    const uint8_t *font = shinonome_kanji_lv1_16[idx];
+
+    for (int row = 0; row < 16; row++) {
+        uint16_t bits = (font[row*2] << 8) | font[row*2 + 1];
+        for (int col = 0; col < 16; col++) {
+            if (bits & (0x8000 >> col)) {
+                drawPixel(x + col, y + row, fg);
+            } else {
+                drawPixel(x + col, y + row, bg);
+            }
+        }
+    }
+}
